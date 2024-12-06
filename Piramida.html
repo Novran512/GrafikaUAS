@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piramida 3D</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+  <script>
+    //  Inisialisasi Scene, Kamera, dan Renderer
+    const scene = new THREE.Scene();
+
+    // Camera setup
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);//sudut pandang, rasio aspek, jarak min & max cam
+    camera.position.z = 5;
+
+    // Renderer setup
+    const renderer = new THREE.WebGLRenderer(); //webGLRendere grafik
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // membuat piramid 3D
+    const geometry = new THREE.ConeGeometry(1, 2, 4); // Base radius, height, and sisi (4 for a pyramid)
+    const material = new THREE.MeshBasicMaterial({ color: 0xffa500, wireframe: true }); // buat materi sederhana Orange with wireframe
+    const pyramid = new THREE.Mesh(geometry, material);
+    scene.add(pyramid);
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      // Rotasi Piramida
+      pyramid.rotation.x += 0.01;
+      pyramid.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Penanganan Perubahan Ukuran Layar
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+  </script>
+</body>
+</html>
